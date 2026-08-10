@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install Debian 13 — Muhammad Nazil Abror</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<style>
+  :root {
+    --bg: #14181f;
+    --bg-card: #1c222c;
+    --text-primary: #f1f3f6;
+    --text-secondary: #b7c0cc;
+    --accent: #4da3ff;
+    --border: #2a313d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(20,24,31,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  header a.back {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  header a.back:hover { text-decoration: underline; }
+  header .brand {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+  h1.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .author {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  main h1:not(.page-title), main h2, main h3 {
+    color: var(--accent);
+    font-size: 1.25rem;
+    margin-top: 2.2em;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  p { color: var(--text-secondary); }
+  strong { color: var(--text-primary); }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto !important;
+    width: auto !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0 22px;
+  }
+  code, pre {
+    background: #0f1319;
+    color: #9fe870;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  hr { border-color: var(--border); margin: 3em 0; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="/#portfolio">&larr; Kembali ke Portfolio</a>
+  <span class="brand">Muhammad Nazil Abror</span>
+</header>
+<main>
+  <h1 class="page-title">Install Debian 13</h1>
+  <p class="author">Debian 13 &middot; Jobsheet Konfigurasi</p>
+  <h3 id="buat-virtual-machine-baru">1. Buat Virtual Machine Baru</h3>
+<p>Buka VMware Workstation, pilih Create a New Virtual Machine, lalu
+pilih Typical (Recommended). Klik Next.</p>
+<p><img src="media/image1.png" /></p>
+<p>Pilih Installer disc image file (iso), lalu klik Browse dan cari file
+ISO Debian 13 yang sudah kalian download. Klik Next.</p>
+<p><img src="media/image2.png" /></p>
+<p>Pada Guest Operating System pilih Linux, dan pada Version pilih
+Debian (versi 64-bit). Klik Next.</p>
+<p><img src="media/image3.png" /></p>
+<p>Beri nama Virtual Machine dan tentukan lokasi penyimpanannya. Klik
+Next.</p>
+<p><img src="media/image4.png" /></p>
+<p>Atur ukuran RAM (memory) untuk virtual machine, minimal 2 GB agar
+instalasi lancar / sesuaikan dengan kapasitas laptop masing-masing. Jika
+sudah, klik Finish untuk membuat VM.</p>
+<p><img src="media/image5.png" /></p>
+<h3 id="jalankan-virtual-machine-dan-mulai-instalasi">2. Jalankan
+Virtual Machine dan Mulai Instalasi</h3>
+<p>Nyalakan (Power On) virtual machine yang sudah dibuat. Pada tampilan
+awal installer, pilih Graphical Install.</p>
+<p><img src="media/image6.png" /></p>
+<h3 id="pilih-bahasa-lokasi-dan-tata-letak-keyboard">3. Pilih Bahasa,
+Lokasi, dan Tata Letak Keyboard</h3>
+<p>Pilih bahasa yang akan digunakan selama proses instalasi, Klik
+Continue.</p>
+<p><img src="media/image7.png" /></p>
+<p>Pilih lokasi tempat kalian berada. Zona waktu akan otomatis mengikuti
+lokasi ini. Klik Continue.</p>
+<p><img src="media/image8.png" /></p>
+<p>Pilih tata letak keyboard yang sesuai, Klik Continue.</p>
+<p><img src="media/image9.png" /></p>
+<p>Tunggu proses installer memuat komponen tambahan yang dibutuhkan.</p>
+<p><img src="media/image10.png" /></p>
+<h3 id="konfigurasi-jaringan-hostname-dan-domain">4. Konfigurasi
+Jaringan (Hostname dan Domain)</h3>
+<p>Isi hostname atau nama untuk sistem kalian, misalnya debian. Klik
+Continue.</p>
+<p><img src="media/image11.png" /></p>
+<p>Isi domain name jika ada, atau kosongkan saja jika tidak digunakan.
+Klik Continue.</p>
+<p><img src="media/image12.png" /></p>
+<h3 id="tentukan-password-root">5. Tentukan Password Root</h3>
+<p>Masukkan password untuk akun root, disarankan pw nya yang singkat
+saja seperti 123 agar lebih mudah diingat, lalu ketik ulang untuk
+konfirmasi. Klik Continue.</p>
+<p><img src="media/image13.png" /></p>
+<h3 id="buat-user-baru">6. Buat User Baru</h3>
+<p>Masukkan nama masing-masing untuk user baru (bukan root). Klik
+Continue.</p>
+<p><img src="media/image14.png" /></p>
+<p>Buat password untuk user baru tersebut, disarankan yang singkat
+seperti 123 agar mudah diingat, lalu ketik ulang untuk konfirmasi. Klik
+Continue.</p>
+<p><img src="media/image15.png" /></p>
+<h3 id="atur-zona-waktu">7. Atur Zona Waktu</h3>
+<p>Pilih zona waktu yang sesuai dengan lokasi kalian. Klik Continue.</p>
+<p><img src="media/image16.png" /></p>
+<h3 id="partisi-hard-disk">8. Partisi Hard Disk</h3>
+<p>Pilih metode partisi. Untuk pemula, pilih Guided - use entire disk
+agar partisi dibuat otomatis. Klik Continue.</p>
+<p><img src="media/image17.png" /></p>
+<p>Pilih disk yang akan dipartisi. Klik Continue.</p>
+<p><img src="media/image18.png" /></p>
+<p>Pilih skema partisi All files in one partition (recommended for new
+users). Klik Continue.</p>
+<p><img src="media/image19.png" /></p>
+<p>Periksa hasil partisi yang dibuat, lalu pilih Finish partitioning and
+write changes to disk. Lalu Continue saja.</p>
+<p><img src="media/image20.png" /></p>
+<p>Pilih Yes untuk menyimpan perubahan partisi ke disk.</p>
+<p><img src="media/image21.png" /></p>
+<h3 id="konfigurasi-package-manager">9. Konfigurasi Package Manager</h3>
+<p>Pilih No. Klik Continue.</p>
+<p><img src="media/image22.png" /></p>
+<p>Pilih No untuk melewati penggunaan network mirror. Klik Continue.</p>
+<p><img src="media/image23.png" /></p>
+<p>Pilih No untuk melewati survei penggunaan paket.</p>
+<p><img src="media/image24.png" /></p>
+<h3 id="pilih-software-yang-akan-diinstal">10. Pilih Software yang Akan
+Diinstal</h3>
+<p>Pilih paket software yang ingin diinstal, disarankan untuk pemula
+install GUI saja dengan mencentang bagian :</p>
+<ul>
+<li><p>Debian desktop environment</p></li>
+<li><p>GNOME</p></li>
+<li><p>standard system utilities.</p></li>
+</ul>
+<p>Klik Continue.</p>
+<p><img src="media/image25.png" /></p>
+<h3 id="instal-grub-boot-loader">11. Instal GRUB Boot Loader</h3>
+<p>Pilih Yes untuk memasang GRUB boot loader ke drive utama. Klik
+Continue.</p>
+<p><img src="media/image26.png" /></p>
+<p>Pilih device tempat GRUB akan dipasang, /dev/sda. Klik Continue.</p>
+<p><img src="media/image27.png" /></p>
+<h3 id="selesaikan-instalasi">12. Selesaikan Instalasi</h3>
+<p>Instalasi selesai. Klik Continue untuk reboot.</p>
+<p><img src="media/image28.png" /></p>
+<h3 id="login-ke-debian-13">13. Login ke Debian 13</h3>
+<p>Sistem akan boot masuk ke Debian 13.</p>
+<p><img src="media/image29.png" /></p>
+<p>Pilih user yang sudah dibuat sebelumnya untuk login.</p>
+<p><img src="media/image30.png" /></p>
+<p>Masukkan password user tersebut.</p>
+<p><img src="media/image31.png" /></p>
+<p>Setelah berhasil login, kalian akan masuk ke tampilan desktop GNOME
+Debian 13.</p>
+<p><img src="media/image32.png" /></p>
+<h3 id="membuka-terminal">14. Membuka Terminal</h3>
+<p>Buka aplikasi Terminal untuk mulai menjalankan perintah.</p>
+<p><img src="media/image33.png" /></p>
+<p>Gunakan perintah #su root lalu masukkan password root untuk masuk
+sebagai administrator (root).</p>
+<p><img src="media/image34.png" /></p>
+
+</main>
+</body>
+</html>

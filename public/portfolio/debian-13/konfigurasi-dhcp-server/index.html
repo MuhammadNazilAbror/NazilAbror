@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konfigurasi DHCP Server — Muhammad Nazil Abror</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<style>
+  :root {
+    --bg: #14181f;
+    --bg-card: #1c222c;
+    --text-primary: #f1f3f6;
+    --text-secondary: #b7c0cc;
+    --accent: #4da3ff;
+    --border: #2a313d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(20,24,31,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  header a.back {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  header a.back:hover { text-decoration: underline; }
+  header .brand {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+  h1.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .author {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  main h1:not(.page-title), main h2, main h3 {
+    color: var(--accent);
+    font-size: 1.25rem;
+    margin-top: 2.2em;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  p { color: var(--text-secondary); }
+  strong { color: var(--text-primary); }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto !important;
+    width: auto !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0 22px;
+  }
+  code, pre {
+    background: #0f1319;
+    color: #9fe870;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  hr { border-color: var(--border); margin: 3em 0; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="/#portfolio">&larr; Kembali ke Portfolio</a>
+  <span class="brand">Muhammad Nazil Abror</span>
+</header>
+<main>
+  <h1 class="page-title">Konfigurasi DHCP Server</h1>
+  <p class="author">Debian 13 &middot; Jobsheet Konfigurasi</p>
+  <p>DHCP (Dynamic Host Configuration Protocol) Server berfungsi untuk
+membagikan alamat IP secara otomatis ke perangkat client yang terhubung
+ke jaringan lokal, sehingga client tidak perlu mengatur IP secara
+manual. Jobsheet ini menggunakan network kedua (ens37) yang sudah
+dikonfigurasi dengan IP statis 192.168.27.1/24 pada jobsheet sebelumnya.
+Ikuti langkah-langkah berikut secara berurutan.</p>
+<h1 id="pastikan-koneksi-internet-sudah-terhubung"><strong>1. Pastikan
+Koneksi Internet Sudah Terhubung</strong></h1>
+<p>Sebelum memulai instalasi, pastikan Debian sudah terkoneksi ke
+internet, karena paket DHCP Server akan diunduh dari repository
+online.</p>
+<p>#ping 8.8.8.8</p>
+<p><img src="media/image1.png" /></p>
+<h1 id="update-dan-upgrade-sistem"><strong>2. Update dan Upgrade
+Sistem</strong></h1>
+<p>Perbarui daftar paket dan sistem terlebih dahulu agar proses
+instalasi berjalan lancar:</p>
+<p>#apt update</p>
+<p>#apt upgrade</p>
+<p>Tunggu proses berjalan sampai selesai dan pastikan tidak ada tulisan
+error, contohnya seperti berikut:</p>
+<p><img src="media/image2.png" /></p>
+<h1 id="install-paket-dhcp-server"><strong>3. Install Paket DHCP
+Server</strong></h1>
+<p>Install paket isc-dhcp-server dengan perintah berikut:</p>
+<p>#apt install isc-dhcp-server</p>
+<p>Jika muncul pilihan konfirmasi (Y/n), ketik Y lalu tekan Enter untuk
+melanjutkan.</p>
+<p><img src="media/image3.png" /></p>
+<p><strong>Jangan panik jika muncul tulisan merah / error setelah
+instalasi selesai</strong></p>
+<p>Tampilan seperti gambar di bawah ini adalah hal yang wajar terjadi.
+Begitu paket isc-dhcp-server selesai diinstall, sistem otomatis mencoba
+menjalankan service-nya. Namun karena file konfigurasi dhcpd.conf masih
+kosong (belum ada subnet dan interface yang ditentukan), service DHCP
+gagal berjalan (failed) untuk sementara. Ini bukan tanda kegagalan
+instalasi, jadi bisa diabaikan dulu, karena akan kita perbaiki pada
+langkah konfigurasi selanjutnya.</p>
+<p><img src="media/image4.png" /></p>
+<p><img src="media/image5.png" /></p>
+<h1 id="tentukan-interface-yang-digunakan-untuk-dhcp-server"><strong>4.
+Tentukan Interface yang Digunakan untuk DHCP Server</strong></h1>
+<p>Buka file konfigurasi default isc-dhcp-server untuk menentukan
+interface mana yang akan digunakan untuk membagikan IP:</p>
+<p>#nano /etc/default/isc-dhcp-server</p>
+<p>Cari baris INTERFACESv4 dan isi dengan nama interface jaringan lokal
+yang digunakan, dalam contoh ini ens37:</p>
+<p>INTERFACESv4="ens37"</p>
+<p><img src="media/image6.png" /></p>
+<p>Simpan dengan Ctrl+O lalu Enter, kemudian keluar dengan Ctrl+X.</p>
+<h1 id="konfigurasi-file-dhcpd.conf"><strong>5. Konfigurasi File
+dhcpd.conf</strong></h1>
+<p>Selanjutnya buka file konfigurasi utama DHCP Server:</p>
+<p>#nano /etc/dhcp/dhcpd.conf</p>
+<p>Cari bagian yang bertuliskan "A slightly different configuration for
+an internal subnet" seperti gambar di bawah ini:</p>
+<p><img src="media/image7.png" /></p>
+<p>Hapus tanda pagar (#) pada baris subnet sampai tanda kurung tutup di
+bawahnya, lalu sesuaikan isinya dengan jaringan yang digunakan. Contoh
+konfigurasi (sesuaikan dengan IP network kalian masing-masing):</p>
+<p>subnet 192.168.27.0 netmask 255.255.255.0 {</p>
+<p>range 192.168.27.10 192.168.27.15;</p>
+<p>option domain-name-servers ns1.internal.example.org;</p>
+<p>option domain-name "internal.example.org";</p>
+<p>option routers 192.168.27.1;</p>
+<p>option broadcast-address 192.168.27.255;</p>
+<p>default-lease-time 600;</p>
+<p>max-lease-time 7200;</p>
+<p>}</p>
+<p>Penjelasan singkat tiap bagian:</p>
+<blockquote>
+<p>• subnet dan netmask — alamat jaringan (network ID) dan netmask
+sesuai IP interface ens37 (192.168.27.1/24), sehingga subnet-nya
+192.168.27.0.</p>
+<p>• range — batas awal dan akhir alamat IP yang akan dibagikan ke
+client, perhatikan tanda titik koma (;) di akhir baris.</p>
+<p>• option routers — alamat gateway yang akan diberikan ke client,
+biasanya sama dengan IP server (192.168.27.1).</p>
+<p>• option broadcast-address — alamat broadcast dari network
+tersebut.</p>
+<p>• default-lease-time / max-lease-time — lama waktu (detik) client
+boleh menggunakan IP sebelum harus diperbarui.</p>
+</blockquote>
+<p><img src="media/image8.png" /></p>
+<p>Setelah dipastikan tidak ada yang salah, simpan dengan Ctrl+O lalu
+Enter, kemudian keluar dengan Ctrl+X.</p>
+<h1 id="restart-dan-cek-status-dhcp-server"><strong>6. Restart dan Cek
+Status DHCP Server</strong></h1>
+<p>Terapkan konfigurasi yang baru dibuat dengan merestart service
+DHCP:</p>
+<p>#systemctl restart isc-dhcp-server</p>
+<p>setelah restart tidak ada output apa-apa (kosong) berarti
+berhasil.</p>
+<p>Lalu cek statusnya untuk memastikan service sudah berjalan
+(active/running):</p>
+<p>#systemctl status isc-dhcp-server</p>
+<p><mark>Jika berhasil, statusnya akan berubah menjadi active (running)
+berwarna hijau seperti berikut.</mark></p>
+<p><mark>Jika masih gagal, periksa kembali konfigurasi pada langkah 4
+dan 5.</mark></p>
+<p><img src="media/image9.png" /></p>
+<h1 id="uji-coba-dari-sisi-client"><strong>7. Uji Coba dari Sisi
+Client</strong></h1>
+<p>Langkah terakhir adalah menguji apakah client bisa mendapatkan IP
+secara otomatis dari DHCP Server.</p>
+<p>a. Buka Control Panel pada komputer/laptop client, lalu masuk ke
+Network and Internet &gt; Network and Sharing Center.</p>
+<p><img src="media/image10.png" /></p>
+<p><img src="media/image11.png" /></p>
+<p>b. Klik Change adapter settings, lalu cari adapter VMware Network
+Adapter VMnet1 (Host-only) yang sudah diatur pada jobsheet network
+sebelumnya.</p>
+<p><img src="media/image12.png" /></p>
+<p>c. Klik kanan pada adapter tersebut, pilih Disable, lalu klik kanan
+lagi dan pilih Enable. Langkah ini membuat client meminta ulang alamat
+IP baru ke DHCP Server.</p>
+<p><img src="media/image13.png" /></p>
+<p>d. Klik kanan pada adapter, pilih Status, lalu klik Details untuk
+melihat apakah client sudah mendapatkan alamat IP dari DHCP Server
+(perhatikan IPv4 Address dan IPv4 DHCP Server).</p>
+<p><img src="media/image14.png" /></p>
+<p>e. Jika sudah mendapatkan IP, uji koneksi melalui Command Prompt
+dengan melakukan ping ke alamat IP yang diterima, dan ping ke 8.8.8.8
+untuk memastikan client juga bisa mengakses internet.</p>
+<p>ping [IP yang didapat client]</p>
+<p>ping 8.8.8.8</p>
+<p><img src="media/image15.png" /></p>
+<p><em>Jika client berhasil mendapatkan IP secara otomatis dan ping
+berjalan lancar, artinya DHCP Server sudah berfungsi dengan
+baik.</em></p>
+
+</main>
+</body>
+</html>

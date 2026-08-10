@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konfigurasi 2 Network — Muhammad Nazil Abror</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<style>
+  :root {
+    --bg: #14181f;
+    --bg-card: #1c222c;
+    --text-primary: #f1f3f6;
+    --text-secondary: #b7c0cc;
+    --accent: #4da3ff;
+    --border: #2a313d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(20,24,31,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  header a.back {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  header a.back:hover { text-decoration: underline; }
+  header .brand {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+  h1.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .author {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  main h1:not(.page-title), main h2, main h3 {
+    color: var(--accent);
+    font-size: 1.25rem;
+    margin-top: 2.2em;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  p { color: var(--text-secondary); }
+  strong { color: var(--text-primary); }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto !important;
+    width: auto !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0 22px;
+  }
+  code, pre {
+    background: #0f1319;
+    color: #9fe870;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  hr { border-color: var(--border); margin: 3em 0; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="/#portfolio">&larr; Kembali ke Portfolio</a>
+  <span class="brand">Muhammad Nazil Abror</span>
+</header>
+<main>
+  <h1 class="page-title">Konfigurasi 2 Network</h1>
+  <p class="author">Debian 13 &middot; Jobsheet Konfigurasi</p>
+  <p>Jobsheet ini menjelaskan cara menambahkan network interface kedua
+pada Debian yang berjalan di VMware, agar komputer memiliki dua jalur
+koneksi sekaligus: satu untuk internet (NAT) dan satu untuk jaringan
+lokal (Host-only). Ikuti langkah-langkah di bawah ini secara
+berurutan.</p>
+<h1 id="periksa-koneksi-internet-pada-network-pertama-ens33"><strong>1.
+Periksa Koneksi Internet pada Network Pertama (ens33)</strong></h1>
+<p>Sebelum menambah network baru, pastikan network pertama sudah aktif
+dan terkoneksi ke internet. Buka terminal, masuk sebagai root, lalu
+ketik perintah berikut untuk melihat daftar interface yang aktif:</p>
+<p>#ip a</p>
+<p><img src="media/image1.png" /></p>
+<h1 id="pastikan-network-adapter-pertama-dalam-mode-nat"><strong>2.
+Pastikan Network Adapter Pertama dalam Mode NAT</strong></h1>
+<p>Mode NAT membuat Debian bisa mengakses internet lewat koneksi host
+(komputer utama). Buka menu Virtual Machine Settings di VMware, pilih
+Network Adapter, lalu pastikan opsi NAT sudah tercentang seperti gambar
+berikut.</p>
+<p><img src="media/image2.png" /></p>
+<h1 id="tambahkan-network-adapter-kedua"><strong>3. Tambahkan Network
+Adapter Kedua</strong></h1>
+<p>Selanjutnya tambahkan adapter jaringan baru agar Debian memiliki 2
+interface. Masih di jendela Virtual Machine Settings, klik tombol Add,
+lalu pilih Network Adapter, dan klik Finish.</p>
+<p><img src="media/image3.png" /></p>
+<p>Pada Network Adapter 2 yang baru muncul, pilih Custom: Specific
+virtual network, lalu pilih VMnet1 (Host-only). Mode ini membuat network
+kedua hanya terhubung ke jaringan lokal (antar VM atau ke host), bukan
+ke internet.</p>
+<p><img src="media/image4.png" /></p>
+<h1 id="restart-debian-dan-periksa-interface-baru"><strong>4. Restart
+Debian dan Periksa Interface Baru</strong></h1>
+<p>Setelah itu cek dengan perintah:</p>
+<p>#ip a</p>
+<p>Sekarang akan muncul interface baru bernama ens37. Interface ini
+belum memiliki alamat IP karena belum dikonfigurasi.</p>
+<p><img src="media/image5.png" /></p>
+<h1 id="konfigurasi-alamat-ip-untuk-network-kedua-ens37"><strong>5.
+Konfigurasi Alamat IP untuk Network Kedua (ens37)</strong></h1>
+<p>Buka file konfigurasi network menggunakan perintah:</p>
+<p>#nano /etc/network/interfaces</p>
+<p>Tambahkan konfigurasi berikut di bagian bawah file untuk mengatur
+ens37 dengan IP statis. Sesuaikan alamat IP sesuai kebutuhan atau nomor
+urut absen:</p>
+<p>auto ens37</p>
+<p>iface ens37 inet static</p>
+<p>address 192.168.27.1</p>
+<p>netmask 255.255.255.0</p>
+<p><img src="media/image6.png" /></p>
+<p>Setelah selesai, simpan file dengan menekan Ctrl+O lalu Enter, dan
+keluar dengan Ctrl+X.</p>
+<h1 id="restart-network-dan-periksa-ulang"><strong>6. Restart Network
+dan Periksa Ulang</strong></h1>
+<p>Terapkan konfigurasi yang baru dibuat dengan merestart layanan
+network:</p>
+<p>#systemctl restart networking</p>
+<p><strong>Pastikan tidak ada output apa-apa (kosong) setelah
+restart.</strong></p>
+<p>Cek kembali dengan perintah #ip a</p>
+<p>untuk memastikan ens37 sudah memiliki alamat IP sesuai yang
+dikonfigurasi.</p>
+<p><img src="media/image7.png" /></p>
+<h1 id="uji-koneksi-kedua-network"><strong>7. Uji Koneksi Kedua
+Network</strong></h1>
+<p>Terakhir, lakukan pengujian dengan perintah ping untuk memastikan
+kedua network berjalan dengan baik.</p>
+<p>a. Uji koneksi ke network kedua (lokal / ens37):</p>
+<p>#ping 192.168.27.1</p>
+<p><img src="media/image8.png" /></p>
+<p>b. Uji koneksi ke internet (network pertama / ens33):</p>
+<p>#ping 8.8.8.8</p>
+<p><img src="media/image9.png" /></p>
+<p><em>Jika kedua ping berhasil mendapatkan reply, artinya kedua network
+interface sudah berfungsi dengan benar: ens33 untuk internet dan ens37
+untuk jaringan lokal.</em></p>
+
+</main>
+</body>
+</html>
