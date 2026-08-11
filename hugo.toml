@@ -48,7 +48,7 @@ defaultContentLanguageInSubdir = false
   author = "Muhammad Nazil Abror"
   og_image = "images/og-image.png"
   description = "One-line site description for SEO."
-  linkedin_url = "https://www.linkedin.com/in/nazil-abror-513a01423"
+  linkedin_url = "https://www.linkedin.com/in/muhammad-nazil-abror-513a01423"
   linkedin_text = "linkedin.com/in/NazilAbror"
   github_url = "https://github.com/MuhammadNazilAbror"
   github_text = "github.com/MuhammadNazilAbror"
@@ -68,7 +68,7 @@ defaultContentLanguageInSubdir = false
 
   [[params.social]]
     icon = "linkedin-in"
-    url = "https://www.linkedin.com/in/nazil-abror-513a01423"
+    url = "https://www.linkedin.com/in/muhammad-nazil-abror-513a01423"
   [[params.social]]
     icon = "github"
     url = "https://github.com/MuhammadNazilAbror"
