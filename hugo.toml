@@ -2,7 +2,7 @@
 # Copy sections into your site config.toml and replace placeholders.
 # For running the site, see the Portfolio repo README: https://github.com/felipecordero/felipecordero.github.io
 
-baseURL = "https://mellow-monstera-379f60.netlify.app"
+baseURL = "https://nazilabror.netlify.app"
 locale = "en-us"
 title = "Muhammad Nazil Abror"
 theme = "careercanvas"
