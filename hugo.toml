@@ -59,7 +59,7 @@ defaultContentLanguageInSubdir = false
   resume_url_fr = "/files/your-cv-fr.pdf"
   resume_label = "View CV"
   sectionPagesMenu = "main"
-  formspreeendpoint = ""
+  formspreeendpoint = "https://formspree.io/f/xdenewve"
   pexelsapikey = ""
 
   # Custom local hero background image (used instead of Pexels).
