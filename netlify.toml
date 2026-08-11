@@ -1,0 +1,10 @@
+[build]
+  command = "npm install && npx tailwindcss -i ./themes/careercanvas/assets/css/main.css -o ./assets/css/main.css --minify && hugo --gc --minify"
+  publish = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.134.0"
+  NODE_VERSION = "20"
+
+[context.production.environment]
+  HUGO_ENV = "production"
