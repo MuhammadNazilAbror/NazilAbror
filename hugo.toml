@@ -2,7 +2,7 @@
 # Copy sections into your site config.toml and replace placeholders.
 # For running the site, see the Portfolio repo README: https://github.com/felipecordero/felipecordero.github.io
 
-baseURL = "https://yoursite.com"
+baseURL = "https://mellow-monstera-379f60.netlify.app"
 locale = "en-us"
 title = "Muhammad Nazil Abror"
 theme = "careercanvas"
@@ -59,7 +59,7 @@ defaultContentLanguageInSubdir = false
   resume_url_fr = "/files/your-cv-fr.pdf"
   resume_label = "View CV"
   sectionPagesMenu = "main"
-  formspreeendpoint = "https://formspree.io/f/xdenewve"
+  formspreeendpoint = ""
   pexelsapikey = ""
 
   # Custom local hero background image (used instead of Pexels).
