@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instalasi & Konfigurasi Netdata — Muhammad Nazil Abror</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<style>
+  :root {
+    --bg: #14181f;
+    --bg-card: #1c222c;
+    --text-primary: #f1f3f6;
+    --text-secondary: #b7c0cc;
+    --accent: #4da3ff;
+    --border: #2a313d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(20,24,31,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  header a.back {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  header a.back:hover { text-decoration: underline; }
+  header .brand {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+  h1.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .author {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  main h1:not(.page-title), main h2, main h3 {
+    color: var(--accent);
+    font-size: 1.25rem;
+    margin-top: 2.2em;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  p { color: var(--text-secondary); }
+  strong { color: var(--text-primary); }
+  em { color: var(--text-secondary); }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto !important;
+    width: auto !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0 22px;
+  }
+  code {
+    background: #0f1319;
+    color: #9fe870;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  /* Command / note boxes (converted from Word tables) */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 22px;
+    background: #0f1319;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table th, table td {
+    text-align: left;
+    padding: 12px 16px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.88rem;
+    color: #9fe870;
+    font-weight: 400;
+  }
+  table th strong {
+    color: #ffb454;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  table th p {
+    color: #b7c0cc;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0.4em 0;
+  }
+  hr { border-color: var(--border); margin: 3em 0; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="/#portfolio">&larr; Kembali ke Portfolio</a>
+  <span class="brand">Muhammad Nazil Abror</span>
+</header>
+<main>
+  <h1 class="page-title">Instalasi & Konfigurasi Netdata</h1>
+  <p class="author">Debian 13 &middot; Jobsheet Konfigurasi</p>
+  <p>Netdata adalah tool monitoring real-time yang menampilkan penggunaan
+CPU, RAM, disk, dan network dari sebuah server dalam bentuk dashboard
+interaktif. Jobsheet ini mendokumentasikan instalasi Netdata di Debian
+13 menggunakan script resmi kickstart.sh, karena package netdata tidak
+tersedia langsung di repository bawaan Debian.</p>
+<h1 id="install-curl"><strong>1. Install curl</strong></h1>
+<p>Netdata disediakan lewat script instalasi otomatis yang diunduh
+menggunakan curl. Pastikan curl sudah terpasang:</p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># apt install curl -y</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="media/image1.png" /></p>
+<p><em>Proses instalasi curl berjalan sampai selesai.</em></p>
+<h1 id="download-script-kickstart-netdata"><strong>2. Download Script
+Kickstart Netdata</strong></h1>
+<p>Unduh script instalasi resmi dari Netdata:</p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># curl https://get.netdata.cloud/kickstart.sh &gt;
+/tmp/netdata-kickstart.sh</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="media/image2.png" /></p>
+<p><em>Download berhasil 100% — script kickstart siap
+dijalankan.</em></p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p><strong>⚠ Sempat gagal: "Could not resolve host"</strong></p>
+<p>Pada percobaan pertama, perintah curl di atas gagal dengan error
+'Could not resolve host: get.netdata.cloud'. Penyebabnya: DNS resolver
+server ini sudah dikunci mengarah ke DNS server sendiri (BIND9, dari
+jobsheet DNS Server sebelumnya) yang hanya mengenal domain lokal
+nazilabror.com dan belum bisa menerjemahkan domain publik.</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h1 id="diagnosa-dengan-dig"><strong>3. Diagnosa dengan
+dig</strong></h1>
+<p>Untuk memastikan letak masalahnya, dilakukan pengecekan langsung ke
+DNS server sendiri:</p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># dig get.netdata.cloud @192.168.27.1</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="media/image3.png" /></p>
+<p><em>Hasil status SERVFAIL — DNS server sendiri belum bisa menjawab
+domain publik.</em></p>
+<h1 id="tambahkan-forwarders-nonaktifkan-dnssec-validation"><strong>4.
+Tambahkan Forwarders &amp; Nonaktifkan DNSSEC Validation</strong></h1>
+<p>Solusinya bukan mengganti resolver, melainkan membuat DNS server
+sendiri meneruskan (forward) query yang tidak dikenalinya ke DNS publik.
+Edit file konfigurasi:</p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># nano /etc/bind/named.conf.options</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Tambahkan baris forwarders dan dnssec-validation no; di dalam blok
+options { }:</p>
+<p><img src="media/image4.png" /></p>
+<p><em>Isi named.conf.options setelah ditambahkan forwarders ke 8.8.8.8
+/ 8.8.4.4 dan dnssec-validation dimatikan (mengatasi SERVFAIL akibat
+validasi DNSSEC yang gagal di jaringan virtual).</em></p>
+<p>Simpan dan restart service BIND9 agar konfigurasi baru
+diterapkan:</p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># systemctl restart bind9</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="media/image5.png" /></p>
+<p><em>Restart berhasil tanpa output — tandanya normal.</em></p>
+<h1 id="jalankan-script-instalasi"><strong>5. Jalankan Script
+Instalasi</strong></h1>
+<p>Setelah DNS server bisa resolve domain publik, jalankan script
+kickstart yang sudah diunduh:</p>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># sh /tmp/netdata-kickstart.sh</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="media/image6.png" /></p>
+<p><em>Proses instalasi Netdata Agent dimulai.</em></p>
+<p><img src="media/image7.png" /></p>
+<p><em>Instalasi berhasil — "Successfully installed the Netdata Agent."
+Dashboard bisa diakses lewat http://NODE:19999.</em></p>
+<h1 id="cek-status-service-netdata"><strong>6. Cek Status Service
+Netdata</strong></h1>
+<table>
+<colgroup>
+<col />
+</colgroup>
+<thead>
+<tr class="header">
+<th># systemctl status netdata</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="media/image8.png" /></p>
+<p><em>Status active (running) berwarna hijau menandakan Netdata sudah
+berjalan sebagai service.</em></p>
+<h1 id="akses-dashboard-netdata"><strong>7. Akses Dashboard
+Netdata</strong></h1>
+<p>Buka browser dan akses http://192.168.27.1:19999 (sesuaikan dengan IP
+server). Saat pertama kali dibuka, akan muncul ajakan Sign-in ke Netdata
+Cloud — pilih "Skip and use the dashboard anonymously" karena monitoring
+lokal sudah cukup untuk kebutuhan jobsheet ini.</p>
+<p><img src="media/image9.png" /></p>
+<p><em>Dashboard Netdata menampilkan metrics real-time: CPU, RAM,
+network, dan proses sistem — tanda instalasi berhasil
+sepenuhnya.</em></p>
+
+</main>
+</body>
+</html>

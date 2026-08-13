@@ -28,4 +28,8 @@ categories:
         description: "Konfigurasi DNS Server (BIND9) untuk menerjemahkan nama domain ke IP di Debian 13."
         icon: "globe"
         url: "/portfolio/debian-13/konfigurasi-dns-server/"
+      - title: "Instalasi & Konfigurasi Netdata"
+        description: "Monitoring real-time CPU, RAM, disk, dan network server lewat dashboard Netdata di Debian 13."
+        icon: "chart-line"
+        url: "/portfolio/debian-13/konfigurasi-netdata/"
 ---
