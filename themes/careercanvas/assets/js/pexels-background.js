@@ -19,11 +19,28 @@ class PexelsBackground {
 
     waitForConfig() {
         this.apiKey = window.PEXELS_API_KEY || null;
-        if (this.apiKey) {
+        this.customBgImage = window.HERO_BG_IMAGE || null;
+        if (this.customBgImage) {
+            this.useCustomBackground();
+        } else if (this.apiKey) {
             this.init();
         } else {
             this.useFallbackBackground();
         }
+    }
+
+    useCustomBackground() {
+        const heroSection = document.querySelector('.hero-section');
+        if (!heroSection) return;
+
+        heroSection.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('${this.customBgImage}')`;
+        heroSection.style.backgroundSize = 'cover';
+        heroSection.style.backgroundPosition = 'center';
+        heroSection.style.backgroundRepeat = 'no-repeat';
+        heroSection.classList.add('pexels-bg');
+        heroSection.classList.remove('gradient-bg');
+
+        this.setCredit(null);
     }
 
     hideGradientBackground() {
