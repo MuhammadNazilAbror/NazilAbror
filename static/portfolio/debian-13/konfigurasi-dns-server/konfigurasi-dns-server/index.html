@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konfigurasi DNS Server (BIND9) — Muhammad Nazil Abror</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<style>
+  :root {
+    --bg: #14181f;
+    --bg-card: #1c222c;
+    --text-primary: #f1f3f6;
+    --text-secondary: #b7c0cc;
+    --accent: #4da3ff;
+    --border: #2a313d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(20,24,31,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  header a.back {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  header a.back:hover { text-decoration: underline; }
+  header .brand {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+  h1.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .author {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  main h1:not(.page-title), main h2, main h3 {
+    color: var(--accent);
+    font-size: 1.25rem;
+    margin-top: 2.2em;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  p { color: var(--text-secondary); }
+  strong { color: var(--text-primary); }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto !important;
+    width: auto !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0 22px;
+  }
+  code, pre {
+    background: #0f1319;
+    color: #9fe870;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .cmd {
+    background: #0f1319;
+    color: #9fe870;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 0.9em;
+    margin: 14px 0 22px;
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+  }
+  .note {
+    background: #2a2213;
+    border: 1px solid #6b5a1f;
+    border-left: 4px solid #e0b833;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 20px 0;
+  }
+  .note strong { color: #e0b833; }
+  .note p { color: var(--text-secondary); margin: 8px 0 0; }
+  hr { border-color: var(--border); margin: 3em 0; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="/#portfolio">&larr; Kembali ke Portfolio</a>
+  <span class="brand">Muhammad Nazil Abror</span>
+</header>
+<main>
+  <h1 class="page-title">Konfigurasi DNS Server (BIND9)</h1>
+  <p class="author">Debian 13 &middot; Jobsheet Konfigurasi</p>
+<p>DNS (Domain Name System) Server berfungsi menerjemahkan nama domain
+(misalnya nazilabror.com) menjadi alamat IP, sehingga client tidak perlu
+menghafal angka IP untuk mengakses layanan di jaringan. Jobsheet ini
+menggunakan network kedua (ens33/ens37) yang sudah dikonfigurasi dengan
+IP statis 192.168.27.1/24 pada jobsheet sebelumnya, dengan nama domain
+contoh nazilabror.com. Ikuti langkah-langkah berikut secara
+berurutan.</p>
+<div class="note"><strong>⚠ Perhatian khusus untuk Debian 13 (Trixie)</strong><p>Jobsheet ini dikhususkan untuk Debian 13, karena paket bind9 versi
+baru (9.20.x) di Trixie TIDAK LAGI menyertakan file bawaan seperti
+db.local, db.127, db.0, db.255, bind.keys, dan named.conf.default-zones
+secara otomatis seperti di Debian 11/12. Jadi setelah instalasi, folder
+/etc/bind akan terlihat lebih "kosong" dari biasanya — ini normal, bukan
+error. Semua file zona pada tutorial ini dibuat manual dari
+nol.</p></div>
+<h1 id="pastikan-koneksi-internet-sudah-terhubung"><strong>1. Pastikan
+Koneksi Internet Sudah Terhubung</strong></h1>
+<p>Sebelum memulai instalasi, pastikan Debian sudah terkoneksi ke
+internet, karena paket BIND9 akan diunduh dari repository online.</p>
+<div class="cmd"># ping 8.8.8.8</div>
+<h1 id="update-sistem-dan-install-paket-bind9"><strong>2. Update Sistem
+dan Install Paket BIND9</strong></h1>
+<p>Perbarui daftar paket, lalu install BIND9 beserta tools-nya:</p>
+<div class="cmd"># apt update<br># apt install bind9 -y</div>
+<p><img src="media/image1.png" /></p>
+<p><em>Proses instalasi paket bind9 berjalan sampai selesai.</em></p>
+<h1 id="cek-isi-folder-etcbind"><strong>3. Cek Isi Folder
+/etc/bind</strong></h1>
+<p>Pindah ke direktori konfigurasi BIND9, lalu lihat file apa saja yang
+tersedia:</p>
+<div class="cmd"># cd /etc/bind<br />
+# ls</div>
+<p><img src="media/image2.png" /></p>
+<p><em>Di Debian 13, isinya hanya named.conf, named.conf.local,
+named.conf.options, named.conf.root-hints, dan rndc.key — file db.*
+memang tidak ada dan akan kita buat sendiri.</em></p>
+<h1 id="edit-named.conf.local-daftarkan-zona-forward-reverse"><strong>4.
+Edit named.conf.local — Daftarkan Zona Forward &amp;
+Reverse</strong></h1>
+<p>File ini tempat mendaftarkan zona domain yang akan dikelola server.
+Buka dengan:</p>
+<div class="cmd"># nano named.conf.local</div>
+<p>Isi dengan konfigurasi berikut (sesuaikan nama domain dan network
+dengan milik kalian):</p>
+<div class="cmd">zone "nazilabror.com" {<br />
+type master;<br />
+file "/etc/bind/db.nazilabror.com";<br />
+};<br />
+<br />
+zone "27.168.192.in-addr.arpa" {<br />
+type master;<br />
+file "/etc/bind/db.192";<br />
+};</div>
+<p><strong>Penjelasan singkat:</strong></p>
+<ul>
+<li><p>zone "nazilabror.com" — zona forward, untuk menerjemahkan nama
+domain → IP.</p></li>
+<li><p>zone "27.168.192.in-addr.arpa" — zona reverse, untuk
+menerjemahkan IP → nama domain. Angka network (192.168.27) ditulis
+terbalik menjadi 27.168.192.</p></li>
+</ul>
+<p><img src="media/image3.png" /></p>
+<p><em>Contoh isi named.conf.local setelah diisi. Simpan dengan Ctrl+O
+lalu Enter, keluar dengan Ctrl+X.</em></p>
+<h1 id="buat-file-zona-forward-db.nazilabror.com"><strong>5. Buat File
+Zona Forward (db.nazilabror.com)</strong></h1>
+<p>File ini berisi data yang menerjemahkan domain menjadi IP. Buat
+dengan:</p>
+<div class="cmd"># nano db.nazilabror.com</div>
+<p>Isi dengan:</p>
+<div class="cmd">;<br />
+; BIND data file for nazilabror.com<br />
+;<br />
+$TTL 604800<br />
+@ IN SOA ns1.nazilabror.com. admin.nazilabror.com. (<br />
+3 ; Serial<br />
+604800 ; Refresh<br />
+86400 ; Retry<br />
+2419200 ; Expire<br />
+604800 ) ; Negative Cache TTL<br />
+;<br />
+@ IN NS ns1.nazilabror.com.<br />
+ns1 IN A 192.168.27.1<br />
+@ IN A 192.168.27.1<br />
+www IN A 192.168.27.1</div>
+<p><img src="media/image4.png" /></p>
+<p><em>Isi file db.nazilabror.com setelah selesai diketik.</em></p>
+<h1 id="buat-file-zona-reverse-db.192"><strong>6. Buat File Zona Reverse
+(db.192)</strong></h1>
+<p>File ini berisi data kebalikannya, dari IP ke nama domain. Buat
+dengan:</p>
+<div class="cmd"># nano db.192</div>
+<p>Isi dengan:</p>
+<div class="cmd">;<br />
+; BIND reverse data file for 192.168.27.0/24<br />
+;<br />
+$TTL 604800<br />
+@ IN SOA ns1.nazilabror.com. admin.nazilabror.com. (<br />
+3 ; Serial<br />
+604800 ; Refresh<br />
+86400 ; Retry<br />
+2419200 ; Expire<br />
+604800 ) ; Negative Cache TTL<br />
+;<br />
+@ IN NS ns1.nazilabror.com.<br />
+1 IN PTR nazilabror.com.</div>
+<p>Baris PTR "1" mewakili oktet terakhir dari IP 192.168.27.1 (yaitu
+angka 1), yang diarahkan balik ke nama domain nazilabror.com.</p>
+<p><img src="media/image5.png" /></p>
+<p><em>Isi file db.192 setelah selesai diketik.</em></p>
+<h1 id="set-kepemilikan-file-zona"><strong>7. Set Kepemilikan File
+Zona</strong></h1>
+<p>Pastikan file zona dimiliki oleh user bind agar bisa dibaca oleh
+service BIND9:</p>
+<div class="cmd"># chown bind:bind db.nazilabror.com db.192</div>
+<h1 id="cek-syntax-konfigurasi-dan-zona"><strong>8. Cek Syntax
+Konfigurasi dan Zona</strong></h1>
+<p>Sebelum restart service, selalu cek dulu apakah konfigurasi dan file
+zona valid, supaya lebih mudah melacak kalau ada kesalahan
+penulisan:</p>
+<div class="cmd"># named-checkconf</div>
+<p>Jika tidak ada output/pesan, artinya named.conf dan file include-nya
+sudah benar. Lanjutkan cek tiap zona:</p>
+<div class="cmd"># named-checkzone nazilabror.com db.nazilabror.com</div>
+<p><img src="media/image6.png" /></p>
+<p><em>Hasil OK menandakan file zona forward valid.</em></p>
+<div class="cmd"># named-checkzone 27.168.192.in-addr.arpa db.192</div>
+<p><img src="media/image7.png" /></p>
+<p><em>Hasil OK menandakan file zona reverse valid.</em></p>
+<h1 id="restart-dan-cek-status-bind9"><strong>9. Restart dan Cek Status
+BIND9</strong></h1>
+<div class="cmd"># systemctl restart bind9</div>
+<p><img src="media/image8.png" /></p>
+<p><em>Tidak ada output setelah restart berarti berhasil
+(normal).</em></p>
+<div class="cmd"># systemctl status bind9</div>
+<p><img src="media/image9.png" /></p>
+<p><em>Jika berhasil, status akan menunjukkan active (running) berwarna
+hijau seperti di atas. Jika masih gagal, periksa kembali langkah
+4–6.</em></p>
+<h1 id="arahkan-resolver-debian-ke-dns-server-sendiri"><strong>10.
+Arahkan Resolver Debian ke DNS Server Sendiri</strong></h1>
+<p>Secara default, /etc/resolv.conf di Debian di-generate otomatis oleh
+dhcpcd dan akan menimpa perubahan manual setiap kali network di-restart.
+Karena kita tetap mempertahankan NAT/DHCP untuk internet, cukup edit
+langsung file resolv.conf-nya, lalu kunci agar tidak ditimpa ulang.</p>
+<div class="cmd"># nano /etc/resolv.conf</div>
+<p>Kosongkan isi bawaan, ganti menjadi:</p>
+<div class="cmd">search nazilabror.com<br />
+nameserver 192.168.27.1</div>
+<p><img src="media/image10.png" /></p>
+<p>Simpan (Ctrl+O, Enter, Ctrl+X), lalu kunci file supaya tidak ditimpa
+ulang oleh dhcpcd:</p>
+<div class="cmd"># chattr +i /etc/resolv.conf<br />
+# lsattr /etc/resolv.conf</div>
+<p><img src="media/image11.png" /></p>
+<p><em>Flag "i" pada hasil lsattr menandakan file sudah terkunci
+(immutable).</em></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<h1 id="uji-coba-dns-server"><strong>11. Uji Coba DNS
+Server</strong></h1>
+<p>Terakhir, uji apakah DNS server sudah berfungsi menerjemahkan domain
+ke IP dengan benar.</p>
+<p><strong>a. Uji dengan perintah dig</strong></p>
+<div class="cmd"># dig nazilabror.com</div>
+<p><img src="media/image12.png" /></p>
+<p><em>Perhatikan bagian ANSWER SECTION — domain nazilabror.com berhasil
+dijawab dengan IP 192.168.27.1, dan bagian SERVER menunjukkan query
+dijawab oleh 192.168.27.1 (server DNS kita sendiri).</em></p>
+<p><strong>b. Uji dengan perintah ping</strong></p>
+<div class="cmd"># ping nazilabror.com</div>
+<p><img src="media/image13.png" /></p>
+<p><em>Ping berhasil dan otomatis menerjemahkan nazilabror.com menjadi
+192.168.27.1 — tanda DNS resolving sudah berjalan.</em></p>
+<p><em>Jika dig menampilkan jawaban pada ANSWER SECTION dan ping
+berhasil menerjemahkan nama domain menjadi IP tanpa perlu mengetik
+alamat server DNS secara manual (@192.168.27.1), artinya DNS Server
+BIND9 di Debian 13 sudah berjalan dengan baik.</em></p>
+
+</main>
+</body>
+</html>

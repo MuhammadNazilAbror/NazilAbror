@@ -24,4 +24,8 @@ categories:
         description: "Konfigurasi DHCP Server untuk membagikan IP otomatis ke client."
         icon: "network-wired"
         url: "/portfolio/debian-13/konfigurasi-dhcp-server/"
+      - title: "Konfigurasi DNS Server"
+        description: "Konfigurasi DNS Server (BIND9) untuk menerjemahkan nama domain ke IP di Debian 13."
+        icon: "globe"
+        url: "/portfolio/debian-13/konfigurasi-dns-server/"
 ---
