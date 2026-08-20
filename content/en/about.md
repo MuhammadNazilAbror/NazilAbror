@@ -2,10 +2,10 @@
 title: "About"
 
 # Shown in the main About card (left column)
-intro: "My name is Muhammad Nazil Abror. I am currently a student at SMK Wikrama Bogor, majoring in TJKT (Network and Telecommunications Engineering); the areas I have studied include Linux, Networking, MikroTik, and Cisco. I intend to focus more deeply on Linux now to prepare for a future in Cybersecurity."
+intro: "Hello, my name is Muhammad Nazil Abror, and you can call me Nazil. I am currently a student at SMK Wikrama Bogor, majoring in TJKT (Computer Network and Telecommunication Engineering); the areas I have studied include Linux, networking, MikroTik, and cybersecurity. I intend to deepen my knowledge of Linux to prepare for a career in cybersecurity."
 
 # Shown further down inside the About modal (when someone clicks "More")
-study: "The subjects that stand out most to me are mathematics and history; I have a keen interest in delving deeper into calculations and studying the past to gain insights for the future. Additionally, I have a passion for drawing and have taken painting classes to further develop my skills."
+study: "In the realm of Linux—specifically Debian—I have learned to configure various services such as DHCP, DNS, LDAP, phpMyAdmin, Samba, Netdata, and Roundcube. Regarding networking, I have configured network topologies using Cisco Packet Tracer and implemented static and dynamic routing, among other configurations. Additionally, I have some experience with MikroTik, including DHCP and hotspot configuration."
 
 # Quick Facts card (right column). Each item needs: icon, title, value
 # icon = Font Awesome icon name (without the "fa-" prefix), e.g. briefcase, graduation-cap, trophy, language, heart
@@ -20,7 +20,7 @@ quickfacts:
       Wikrama Bogor Vocational School — Network and Telecommunications Engineering (TJKT), 2025/2026.
   - icon: "trophy"
     title: "Recent Achievement"
-    value: "-"
+    value: "."
   - icon: "language"
     title: "Languages"
     kind: "languages"
@@ -38,10 +38,10 @@ quickfacts:
       - Gaming
       - Psychology
 # Shown inside the About modal, in a highlighted box
-passion_title: "What drives me"
-passion_text: "I am interested in Linux and cybersecurity because there is a high demand for cybersecurity experts in Indonesia."
+passion_title: "My motivation. ."
+passion_text: "I want to be someone who is beneficial to others, whose presence brings a positive impact to the surrounding environment, and who serves as an example for my future children."
 
 # Shown inside the About modal
-mix: "In the realm of Linux—specifically Debian—I have learned how to configure services such as DHCP, DNS, LDAP, phpMyAdmin, Samba, Netdata, and Roundcube. Regarding networking, I have configured network topologies using Cisco Packet Tracer, implementing static and dynamic routing, among other features. Additionally, I have gained experience with MikroTik, including setting up DHCP and hotspots."
-personal: "My hobbies include playing futsal, drawing, and gaming. I am also interested in learning about psychology. My dream is to become a millionaire and send my family on a pilgrimage to Mecca."
+mix: "Mathematics is a subject that interests me. I am keen to delve into calculations and enhance my critical thinking skills. Additionally, I have an interest in drawing and have taken painting classes to develop my abilities."
+personal: "My hobbies include exercising, drawing, and gaming, and I am also interested in studying psychology. My dream is to become a millionaire and send my family on the Hajj pilgrimage to Mecca."
 ---
