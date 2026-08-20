@@ -16,7 +16,7 @@ defaultContentLanguageInSubdir = false
     weight = 1
     [languages.id.params]
       tagline = "Saya adalah siswa SMK Wikrama Bogor tahun ajaran 2025/2026."
-      hero_description = "Jurusan saya adalah TJKT (Teknik Jaringan Komputer dan Telekomunikasi). Saya mempelajari Networking, MikroTik, sistem operasi Linux, dan Cyber Security."
+      hero_description = "Jurusan saya adalah TJKT (Teknik Jaringan Komputer dan Telekomunikasi). Saya mempelajari Jaringan, MikroTik, sistem operasi Linux, dan Keamanan siber."
       hero_location = "Bogor, Jawa Barat, Indonesia"
       collab_tags = ["Networking", "Linux", "Cyber Security"]
       resume_url = "/files/nazil-cv-id.pdf"
