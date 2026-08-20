@@ -36,6 +36,7 @@
         {{/* Determine current language flag */}}
         {{ $cur := $.Site.Language.Lang }}
         {{ $currentFlag := "🏳️" }}
+        {{ if eq $cur "id" }}{{ $currentFlag = "🇮🇩" }}{{ end }}
         {{ if eq $cur "en" }}{{ $currentFlag = "🇬🇧" }}{{ end }}
         {{ if eq $cur "es" }}{{ $currentFlag = "🇨🇱" }}{{ end }}
         {{ if eq $cur "fr" }}{{ $currentFlag = "🇫🇷" }}{{ end }}
@@ -46,12 +47,13 @@
             <i class="fas fa-chevron-down ml-1 text-sm"></i>
           </a>
           <div class="submenu absolute right-0 top-full mt-2 bg-bg dark:bg-bg shadow-lg rounded-lg z-50 min-w-[8rem] opacity-0 invisible">
-            {{ $order := slice "fr" "en" "es" "bg" }}
+            {{ $order := slice "id" "fr" "en" "es" "bg" }}
             {{ range $order }}
               {{ $code := . }}
               {{ range where $homes "Language.Lang" $code }}
                 {{ $lang := .Language.Lang }}
                 {{ $flag := "🏳️" }}
+                {{ if eq $lang "id" }}{{ $flag = "🇮🇩" }}{{ end }}
                 {{ if eq $lang "fr" }}{{ $flag = "🇫🇷" }}{{ end }}
                 {{ if eq $lang "en" }}{{ $flag = "🇬🇧" }}{{ end }}
                 {{ if eq $lang "es" }}{{ $flag = "🇨🇱" }}{{ end }}
@@ -69,7 +71,7 @@
                 {{ end }}
                 
                 <a href="{{ $targetURL }}" class="nav-link block px-4 py-2 text-sm text-text-primary dark:text-text-primary {{ if eq .Language.Lang $.Site.Language.Lang }}font-semibold{{ end }}">
-                  <span class="mr-2">{{ $flag }}</span>{{ .Language.LanguageName }}
+                  <span class="mr-2">{{ $flag }}</span>{{ .Language.Label }}
                 </a>
               {{ end }}
             {{ end }}
@@ -141,12 +143,13 @@
       {{ if gt (len $homes) 1 }}
       <div class="px-3 py-2 border-t border-border-primary dark:border-border-primary">
         <div class="flex items-center space-x-3">
-          {{ $order := slice "fr" "en" "es" "bg" }}
+          {{ $order := slice "id" "fr" "en" "es" "bg" }}
           {{ range $order }}
             {{ $code := . }}
             {{ range where $homes "Language.Lang" $code }}
               {{ $lang := .Language.Lang }}
               {{ $flag := "🏳️" }}
+              {{ if eq $lang "id" }}{{ $flag = "🇮🇩" }}{{ end }}
               {{ if eq $lang "fr" }}{{ $flag = "🇫🇷" }}{{ end }}
               {{ if eq $lang "en" }}{{ $flag = "🇬🇧" }}{{ end }}
               {{ if eq $lang "es" }}{{ $flag = "🇨🇱" }}{{ end }}
@@ -164,7 +167,7 @@
                 {{ end }}
               {{ end }}
               
-              <a href="{{ $targetURL }}" class="px-2 py-1 text-xl {{ if eq .Language.Lang $.Site.Language.Lang }}opacity-100 font-semibold{{ else }}opacity-70 hover:opacity-100{{ end }}" aria-label="Switch to {{ .Language.LanguageName }}{{ if $hasTranslation }} (has translation){{ else }} (go to home){{ end }}">
+              <a href="{{ $targetURL }}" class="px-2 py-1 text-xl {{ if eq .Language.Lang $.Site.Language.Lang }}opacity-100 font-semibold{{ else }}opacity-70 hover:opacity-100{{ end }}" aria-label="Switch to {{ .Language.Label }}{{ if $hasTranslation }} (has translation){{ else }} (go to home){{ end }}">
                 <span aria-hidden="true">{{ $flag }}</span>
               </a>
             {{ end }}
