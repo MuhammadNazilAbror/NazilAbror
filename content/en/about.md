@@ -18,11 +18,9 @@ quickfacts:
     title: "Education"
     value: |
       Wikrama Bogor Vocational School — Network and Telecommunications Engineering (TJKT), 2025/2026.
-      SMPN 01 Cigombong, 2022/2023.
-      SDN Srogol 02, 2017/2018.
   - icon: "trophy"
     title: "Recent Achievement"
-    value: "Completed a Linux project and certification"
+    value: "-"
   - icon: "language"
     title: "Languages"
     kind: "languages"

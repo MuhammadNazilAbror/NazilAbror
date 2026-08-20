@@ -1,8 +1,8 @@
 ---
-title: "Portfolio"
+title: "Post"
 
 # Shown under the section heading
-intro: "Dokumentasi jobsheet konfigurasi Linux Debian yang telah saya kerjakan."
+intro: "Dokumentasi jobsheet konfigurasi Linux Debian yang telah saya kerjakan. ( masih akan tetap berlanjut )"
 
 categories:
   - name: "Debian 13"
